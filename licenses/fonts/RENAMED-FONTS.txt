@@ -1,0 +1,16 @@
+Trianon modified-font rename notice
+
+The original OFL license files in this directory are preserved unchanged.
+The files below are subsets or static instances (Modified Versions under
+SIL OFL 1.1). Their primary family names and related name-table entries
+were changed with fontTools so they do not use the original Reserved Font
+Names. Original copyright and license metadata remain for acknowledgment.
+
+- src/s2v/np.woff: Libre Baskerville static Bold subset -> TrianonBaskerville Bold
+- src/s2v/npr.woff: Libre Baskerville static Regular subset -> TrianonBaskerville Regular
+- src/o1v/a/play.woff2: Playfair Display subset -> TrianonPlayfair
+- src/o1v/a/mono.woff2: IBM Plex Mono subset -> TrianonPlexMono
+
+CSS font-family references were updated to these new names.
+The pre-existing src/o1v/a/frak.woff2 subset uses TrianonFraktur and was
+not changed by this rename pass.

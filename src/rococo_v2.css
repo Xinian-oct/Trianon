@@ -1,0 +1,91 @@
+/* ===== rococo v2 · rail「模切吊牌」 — only the left rail is redrawn; everything else is rococo_v1 as approved ===== */
+/* hang-tag icons (r2v/gen/t_*.png, 2x) hang on the silver cord by a little satin ribbon */
+.rail{left:12px;width:88px;padding:30px 0 70px!important}
+.rail .grp{gap:clamp(3px,1.5vh,14px)!important}
+.rail .it{width:58px!important;height:62px!important;overflow:visible;isolation:auto}
+/* wrapper = the lean when chosen; the image itself does the swinging */
+.rail .it .tgw,.rail .it .hgw.tgw{position:absolute;left:50%;top:-13px;width:52px!important;height:74px!important;margin-left:-26px;display:block;
+  transform-origin:50% 9%;transform:none;transition:transform .55s var(--e-out),filter .5s var(--e-soft)!important;will-change:transform;z-index:1}
+.rail .it .hgw{transform:none!important;animation:none!important}         /* the hourglass flip of v1 does not apply to the calendar */
+.rail .it .hg-sand{display:none!important}
+.rail .it img.tg,.rail .it:hover img.tg,.rail .it:active img.tg{position:absolute!important;left:0;top:0;width:52px!important;height:74px!important;
+  object-fit:contain;transform-origin:50% 9%;transform:none;translate:none;scale:none;rotate:0deg;
+  filter:drop-shadow(0 3px 3.5px rgba(30,39,72,.20)) drop-shadow(0 .5px .5px rgba(30,39,72,.18))!important;transition:none!important;animation:none}
+/* chosen: leans a touch toward you + a pale light behind */
+.rail .it.on .tgw,.rail .it.on .hgw.tgw{transform:perspective(170px) rotateX(15deg) translateY(1px)!important}
+.rail .it.on img.tg{filter:drop-shadow(0 0 5px rgba(255,251,240,.95)) drop-shadow(0 0 12px rgba(220,226,241,.9)) drop-shadow(0 5px 5px rgba(30,39,72,.22))!important}
+.rail .it::after{inset:2px -4px 0;border-radius:50%;background:radial-gradient(closest-side,rgba(251,249,244,.9),rgba(220,226,241,.45) 55%,rgba(220,226,241,0))!important;
+  opacity:0;transform:scale(.7);transition:opacity .5s var(--e-soft),transform .6s var(--e-out)!important;z-index:0}
+.rail .it:hover::after{opacity:0;transform:scale(.7)}
+.rail .it.on::after{opacity:.85;transform:scale(1.12)}
+.rail .it.on::before{display:none!important}
+/* cord draws from the top down; tags come down it */
+.rail .cord{top:4px;bottom:44px;transform-origin:50% 0!important;transform:scaleY(0)}
+body.rail-open .rail .cord{transform:scaleY(1)}
+.rail .cord{transition:transform .28s cubic-bezier(.4,0,.6,1) .18s}
+body.rail-open .rail .cord{transition:transform .62s cubic-bezier(.3,.6,.25,1)}
+.rail .orn2{margin:4px 0 12px!important;position:relative;z-index:21}
+/* resting states (script animates the travel) */
+body:not(.rail-open) .rail .it,body:not(.rail-open) .edge:hover+.rail .it,body:not(.rail-open) .rail:hover .it{opacity:0;transform:translateY(var(--up,-120px))}
+body.rail-open .rail .it,body.rail-open .edge:hover+.rail .it,body.rail-open .rail:hover .it{opacity:1;transform:none}
+/* the shared lace label: same as v1, only re-centred on a 62px tag */
+.rail .ttip{left:15px!important;height:62px!important;width:58px!important;z-index:30!important}
+.rail .ttip>span{left:76px!important}
+@media (prefers-reduced-motion:reduce){
+  .rail .it .tgw,.rail .it .hgw.tgw{transition:none!important}
+  .rail .cord{transition:opacity .3s ease!important;transform:none!important;opacity:0}
+  body.rail-open .rail .cord{opacity:1}
+}
+
+/* ===== v2 合并版 · 挂绳的金色全部换成银蓝 / 白镴银（#BFC8E0–#DCE2F1）：顶饰 ✦、分隔 ✦、绳身、绳结、流苏 ===== */
+.rail .cord{background:linear-gradient(180deg,rgba(191,200,224,0) 0,#BFC8E0 6%,#DCE2F1 38%,#C6CEE4 62%,#BFC8E0 90%,rgba(191,200,224,.9));
+  box-shadow:0 0 5px rgba(220,226,241,.9),0 0 .5px rgba(96,110,150,.35)}
+.rail::before,.rail .orn2{color:#CDD5EA;text-shadow:0 0 5px rgba(255,255,255,.95),0 0 10px rgba(191,200,224,.9),0 .6px .8px rgba(74,90,134,.55)}
+.rail .knot{background:radial-gradient(circle at 35% 30%,#F6F8FC,#BFC8E0 58%,#8D97B3)}
+.rail .tassel{background:linear-gradient(90deg,#9AA4BF,#E6EAF4 45%,#B5BED6)}
+
+/* 空白页欢迎区样式已移到 rococo_v2_empty.css（v3 拱窗·纸雕·钟罩，2026-10-27 11:35）；旧的信笺+荷叶版本见 rococo_v2.bak-1135.css */
+
+/* ===== 2026-10-27 15:55 · 吊牌放大 52→62px（+19%）。为了不挤掉流苏、不溢出 900 高：挂绳上下留白收紧、组间 ✦ 的上下边距收小、吊牌间距改为 clamp(1px,.4vh,8px)。
+   落下 / 摆动 / hover / 选中的写法全不变，只换尺寸（脚本按实际位置量 --up，不依赖尺寸）。备份 rococo_v2.bak-1520.css ===== */
+.rail{width:96px;padding:18px 0 56px!important}
+.rail .grp{gap:clamp(1px,.4vh,8px)!important}
+.rail .it{width:70px!important;height:74px!important}
+.rail .it .tgw,.rail .it .hgw.tgw{top:-15px;width:62px!important;height:88px!important;margin-left:-31px}
+.rail .it img.tg,.rail .it:hover img.tg,.rail .it:active img.tg{width:62px!important;height:88px!important}
+.rail .orn2{margin:0 0 4px!important}
+.rail .ttip{left:15px!important;height:74px!important;width:70px!important}
+.rail .ttip>span{left:88px!important}
+
+/* ===== 2026-10-27 15:55 · 右侧卷宗栏默认收起 + 模切书签拉手（rococo_v2_rp.js）。弹出 = 覆盖（主栏居中、与卷宗栏不重叠） ===== */
+.folio{transition:transform .64s cubic-bezier(.24,1.28,.4,1),opacity .32s ease!important}
+body:not(.rp-open) .folio{transform:translateX(340px)!important;opacity:0;pointer-events:none}
+body:not(.rp-open) .folio{transition:transform .34s cubic-bezier(.55,0,.75,.2),opacity .3s ease .04s!important}
+body:not(.rp-open):not(.fl-open) .thread,body:not(.rp-open):not(.fl-open) .wrap{width:760px!important}
+.thread,.wrap{transition:width .5s cubic-bezier(.22,1,.36,1)}
+#rpTab{all:unset;position:fixed;right:0;top:118px;z-index:44;width:50px;height:156px;cursor:pointer;
+  transform:translateX(62px);transition:transform .5s cubic-bezier(.24,1.3,.4,1),right .64s cubic-bezier(.24,1.28,.4,1)}
+body.rp-peek #rpTab{transform:translateX(0)}
+body.rp-open #rpTab{right:318px;transform:translateX(0)}
+body.fl-open #rpTab,body.st-open #rpTab,body.sr-on #rpTab{transform:translateX(62px)!important;right:0!important}
+#rpTab .rp-paper{position:absolute;left:6px;top:0;width:44px;height:134px;box-sizing:border-box;border-radius:10px 0 0 10px;
+  background:linear-gradient(180deg,#FBF9F4,#EEF1F8);box-shadow:0 0 0 3px #FFFFFF,0 0 0 4px rgba(102,113,143,.45),-6px 8px 16px rgba(30,39,72,.18);
+  display:flex;flex-direction:column;align-items:center;padding-top:9px;gap:4px;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+#rpTab:hover .rp-paper{transform:translateX(-4px) rotate(-1.5deg)}
+#rpTab .rp-star{font-style:normal;font-size:12px;color:#8E99B8}
+#rpTab em{font:normal 15px/1 "Pinyon",serif;color:#4A5A86;writing-mode:vertical-rl;transform:rotate(180deg);height:50px;flex:none}
+#rpTab b{flex:none;font:600 11px/1.15 "Noto Serif CJK SC","Noto Serif SC",serif;color:#2E3A63;writing-mode:vertical-rl;letter-spacing:.2em}
+#rpTab .rp-arr{position:absolute;left:-15px;top:46px;width:18px;height:18px;border-radius:50%;font:700 13px/17px serif;font-style:normal;text-align:center;color:#2E3A63;
+  background:#FBF9F4;box-shadow:0 0 0 1px rgba(102,113,143,.55),0 2px 5px rgba(30,39,72,.18);transition:transform .45s cubic-bezier(.22,1,.36,1)}
+body.rp-open #rpTab .rp-arr{transform:rotate(180deg)}
+#rpTab .rp-tail{position:absolute;left:16px;top:130px;width:30px;height:24px;background:linear-gradient(180deg,#A9B3CC,#BFC8E0);
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%);filter:drop-shadow(0 2px 2px rgba(30,39,72,.2))}
+.folio .rp-x{all:unset;position:absolute;left:-12px;top:-10px;z-index:9;width:26px;height:26px;border-radius:50%;cursor:pointer;
+  background:#FBF9F4;box-shadow:0 0 0 2.5px #FFFFFF,0 0 0 3.5px rgba(102,113,143,.55),0 4px 10px rgba(30,39,72,.2);display:grid;place-items:center;
+  font:600 11px/1 serif;color:#2E3A63;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.folio .rp-x:hover{transform:rotate(90deg) scale(1.06)}
+@media (prefers-reduced-motion:reduce){.folio,#rpTab,.thread,.wrap{transition:opacity .2s ease!important}body:not(.rp-open) .folio{transform:none!important}}
+
+
+/* ===== 2026-10-27 17:40 · 第 11 枚吊牌「浏览器 Navigateur」接在外观后面：每格 74→67px（吊牌图仍 62×88，相邻吊牌多叠几像素，像一串），总高与 10 枚时相同，900 高不溢出。备份 rococo_v2.bak-1720.css ===== */
+.rail .it{height:67px!important}

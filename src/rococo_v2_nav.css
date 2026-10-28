@@ -1,0 +1,32 @@
+/* ===== rococo v2 合并版 · 导航层 (scoped to #nvSoon + the rail's stacking only) ===== */
+/* the rail stays above every page; engine's keychain tag (z 45) keeps hanging in front of it as before */
+.rail{z-index:44}
+.edge{z-index:43}
+
+/* 「即将推出」 die-cut hang tag, tied to the rail tag by a silver-blue string */
+#nvSoon{position:fixed;inset:0;z-index:62;pointer-events:none;visibility:hidden}
+#nvSoon.on{visibility:visible}
+#nvSoon .nv-str{position:absolute;overflow:visible;filter:drop-shadow(0 .5px .6px rgba(30,39,72,.35))}
+#nvSoon .nv-str path{stroke:#A3AFCD;stroke-width:1.3}
+#nvSoon .nv-sw{position:absolute;width:268px;height:132px;transform-origin:25px 66px;pointer-events:auto;cursor:default;
+  filter:drop-shadow(0 9px 12px rgba(38,48,90,.17)) drop-shadow(0 1px 1.5px rgba(38,48,90,.16))}
+#nvSoon.out .nv-sw{pointer-events:none}
+#nvSoon .nv-shape{position:absolute;left:0;top:0;overflow:visible}
+#nvSoon .nv-shape .o{fill:#FBF9F4;stroke:#FFFFFF;stroke-width:5;paint-order:stroke}
+#nvSoon .nv-shape .i{fill:none;stroke:#9DB0CD;stroke-width:1;stroke-dasharray:3.2 3.4;stroke-linecap:round}
+#nvSoon .nv-shape .g0{fill:#E4E9F4;stroke:#AEB9D4;stroke-width:1.6}
+#nvSoon .nv-shape .g1{fill:#F4F1EC;stroke:#C9D1E6;stroke-width:1}
+#nvSoon .nv-shape .ln{stroke:rgba(124,147,186,.35);stroke-width:.8}
+#nvSoon .nv-tx{position:absolute;left:44px;top:20px;right:16px;color:#26305A;font-family:var(--serif)}
+#nvSoon .nv-h{margin:0;display:flex;align-items:baseline;gap:9px;white-space:nowrap}
+#nvSoon .nv-h em{font-family:"Pinyon","PinyonX",serif;font-style:normal;font-size:25px;line-height:30px;color:#6F86B3;letter-spacing:.01em}
+#nvSoon .nv-h b{font-weight:600;font-size:15px;letter-spacing:.32em;color:#2E3A63}
+#nvSoon .nv-pill{margin:5px 0 0;display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 10px 0 9px;border-radius:10px;
+  background:#E6EBF5;box-shadow:inset 0 0 0 1px rgba(157,176,205,.65);font-size:10.5px;color:#4A5A86;letter-spacing:.16em;white-space:nowrap}
+#nvSoon .nv-pill i{font-style:normal;color:#9DB0CD;letter-spacing:0}
+#nvSoon .nv-pill em{font-family:"Cormorant Garamond","CormI",Georgia,serif;font-style:italic;font-size:11.5px;letter-spacing:.04em;color:#5B6C93}
+#nvSoon .nv-l{margin:16px 0 0;font-size:11.5px;letter-spacing:.06em;color:#5B6C93;white-space:nowrap}
+#nvSoon .nv-l span{color:#7C93BA}
+#nvSoon .nv-star{position:absolute;right:16px;top:17px;font-style:normal;font-size:12px;color:#CDD5EA;
+  text-shadow:0 0 5px rgba(255,255,255,.95),0 .6px .8px rgba(74,90,134,.5)}
+@media (prefers-reduced-motion:reduce){#nvSoon .nv-sw{transition:opacity .2s}}

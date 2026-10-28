@@ -1,0 +1,197 @@
+/* ===== 状态 #9 搜索 v2「Chercher · 墨流仪表」 · 只作用于 #sr（以及打开时左栏的层级） =====
+   参考 一段动效参考录屏（亮色 HTML-in-Canvas 仪表盘：液态大理石墨流底、空心大数字、竖排巨字、环形文字轨道、玻璃面板、45° 菱形卡）
+   色：奶白 #FBF9F4 · 银灰 #D5D9E2 · 银蓝 #BFC8E0–#DCE2F1 · 雾蓝 #A9B3CC/#66718F · 墨蓝 #1E2748（只用于文字/细线/小标题条）· 极淡藕粉 #E8C9D0（点缀）
+   亮色、低饱和；无暗色大面板；无密纹/颗粒/波点/网格；条码只有两处小条码。无 backdrop-filter（玻璃 = 半透明奶白 + 细墨蓝边）。 */
+#sr{position:fixed;inset:0;z-index:47;visibility:hidden;pointer-events:none;overflow:hidden;font-family:"Noto Serif CJK SC","Noto Serif SC",serif;color:#1E2748;
+  --ink:#1E2748;--fog:#66718F;--fog2:#A9B3CC;--sb:#BFC8E0;--sb2:#DCE2F1;--cream:#FBF9F4;--lotus:#E8C9D0;
+  --mono:"DejaVu Sans Mono","Courier New",ui-monospace,monospace}
+#sr.on{visibility:visible;pointer-events:auto}
+body.sr-on .rail{z-index:49!important}
+body.sr-on #egTag{z-index:46}
+#sr .abs{position:absolute;left:0;top:0}
+
+/* liquid marble (WebGL, half resolution); fallback = a still gradient revealed by a circle */
+.sr-cv{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.sr-bgf{position:absolute;inset:0;display:none;pointer-events:none;
+  background:radial-gradient(60% 50% at 30% 30%,rgba(220,226,241,.9),rgba(220,226,241,0) 70%),radial-gradient(50% 60% at 75% 70%,rgba(191,200,224,.8),rgba(191,200,224,0) 70%),
+             radial-gradient(30% 30% at 62% 22%,rgba(232,201,208,.35),rgba(232,201,208,0) 70%),linear-gradient(160deg,#FBF9F4,#E9ECF4 50%,#D5D9E2)}
+#sr.nogl .sr-bgf{display:block}
+#sr.nogl .sr-cv{display:none}
+
+/* HUD hairlines, ring, ticks, outline numerals */
+.sr-hud{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.sr-ln{stroke:#1E2748;stroke-opacity:.42;stroke-width:1;fill:none}
+.sr-ln.f{stroke-opacity:.22}
+.sr-dr{stroke-dasharray:1 1;stroke-dashoffset:1}
+.sr-tk{stroke:#1E2748;stroke-opacity:.5;stroke-width:1}
+.sr-tk.big{stroke-opacity:.8;stroke-width:1.4}
+.sr-ring{fill:none;stroke:#1E2748;stroke-width:1}
+.sr-rt{font:600 15px/1 "Noto Serif CJK SC",serif;letter-spacing:.32em;fill:#66718F}
+.sr-rt tspan.on{fill:#1E2748;font-weight:700}
+.sr-rt tspan.no{fill:#1E2748;font:italic 600 17px/1 "CormI",serif}
+.sr-big{font:italic 400 168px/1 "CormI",serif;fill:none;stroke:#1E2748;stroke-width:1.3;letter-spacing:-.02em}
+.sr-big2{font:italic 400 96px/1 "CormI",serif;fill:none;stroke:#1E2748;stroke-width:1.2}
+.sr-mono{font:500 10.5px/1 var(--mono);letter-spacing:.08em;fill:#1E2748;fill-opacity:.72}
+.sr-bar{fill:#1E2748;fill-opacity:.82}
+.sr-dot{fill:#E8C9D0}
+
+/* header: ink label bar + heavy serif word */
+.sr-head{position:absolute;pointer-events:none;opacity:0;white-space:nowrap}
+.sr-lab{display:inline-block;font:700 11px/1 var(--mono);letter-spacing:.24em;color:#FBF9F4;background:#1E2748;padding:5px 10px 5px 12px;transform:skewX(-12deg)}
+.sr-lab i{display:inline-block;transform:skewX(12deg);font-style:normal}
+.sr-hw{display:block;margin-top:6px;font:700 64px/1 "Noto Serif CJK SC",serif;letter-spacing:.06em;color:#1E2748}
+.sr-hs{display:block;margin-top:8px;font:500 10.5px/1.6 var(--mono);letter-spacing:.14em;color:rgba(30,39,72,.66)}
+.sr-date{position:absolute;pointer-events:none;opacity:0;text-align:right;white-space:nowrap}
+.sr-date b{font:800 44px/1 "Noto Serif CJK SC",serif;letter-spacing:-.01em;color:#1E2748}
+.sr-date b small{font-size:30px;font-weight:700}
+.sr-date em{display:inline-block;vertical-align:22px;margin-left:8px;font:700 11px/1 var(--mono);letter-spacing:.16em;color:#FBF9F4;background:#1E2748;padding:4px 7px}
+.sr-date span{display:block;margin-top:8px;font:500 10.5px/1 var(--mono);letter-spacing:.12em;color:rgba(30,39,72,.72)}
+.sr-date span i{font-style:normal;padding:2px 6px;border:1px solid rgba(30,39,72,.5);margin-left:6px}
+
+/* the giant vertical glyph: 寻 → 阅 → 启 */
+.sr-gly{position:absolute;pointer-events:none;width:200px;height:230px}
+.sr-gly span{position:absolute;left:0;top:0;font:900 200px/1 "Noto Serif CJK SC",serif;color:#1E2748;opacity:0;will-change:opacity,filter,-webkit-mask-position}
+.sr-gly span{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 40%,transparent 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 40%,transparent 60%,transparent 100%);
+  -webkit-mask-size:100% 260%;mask-size:100% 260%}
+.sr-gsub{position:absolute;pointer-events:none;white-space:nowrap;opacity:0;text-align:right}
+.sr-gsub b{display:block;font:800 15px/1.2 "Noto Serif CJK SC",serif;letter-spacing:.02em;color:#1E2748}
+.sr-gsub i{display:block;font:italic 600 15px/1.3 "CormI",serif;letter-spacing:.06em;color:#1E2748}
+
+/* search card: cream paper with a silver edge, sitting in the arch window */
+.sr-box{position:absolute;width:420px;height:64px;border-radius:12px;opacity:0;overflow:hidden;background:linear-gradient(180deg,#FFFFFF,#FBF9F4 55%,#F2F0EA);
+  box-shadow:0 0 0 1.5px #C9D0E2,0 0 0 4px #FFFFFF,0 0 0 5px rgba(30,39,72,.32),0 14px 26px rgba(30,39,72,.16)}
+.sr-sheen{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;z-index:2}
+.sr-sheen::before{content:"";position:absolute;top:-20%;bottom:-20%;left:0;width:36%;transform:translateX(var(--shx,-130%)) skewX(-20deg);
+  background:linear-gradient(90deg,rgba(220,226,241,0),rgba(220,226,241,.45) 40%,rgba(255,255,255,.95) 50%,rgba(220,226,241,.4) 60%,rgba(220,226,241,0))}
+.sr-in{position:absolute;left:22px;right:118px;top:50%;height:44px;margin-top:-22px;display:block;cursor:text;z-index:3}
+.sr-in input{all:unset;position:absolute;inset:0;font:500 22px/44px "Noto Serif CJK SC","Noto Serif SC",serif;color:#1E2748;letter-spacing:.06em;caret-color:#1E2748;width:100%}
+.sr-ph{position:absolute;left:0;top:0;line-height:44px;font-size:13.5px;letter-spacing:.14em;color:#3E4A72;white-space:nowrap;pointer-events:none;transition:opacity .2s}
+.sr-ph em{font:normal 27px/44px "Pinyon",serif;letter-spacing:0;color:#1E2748;margin-right:10px;vertical-align:-3px}
+#sr.has-q .sr-ph{opacity:0}
+.sr-ul{position:absolute;left:0;right:0;bottom:3px;height:1.2px;background:linear-gradient(90deg,rgba(30,39,72,.7),rgba(102,113,143,.35) 70%,rgba(102,113,143,0));transform-origin:0 50%;transform:scaleX(.3);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.sr-in:focus-within .sr-ul{transform:scaleX(1)}
+.sr-scope{position:absolute;right:62px;top:50%;margin-top:-12px;height:24px;line-height:23px;padding:0 10px;font:600 11px/23px var(--mono);letter-spacing:.2em;color:#FBF9F4;z-index:3;background:#1E2748}
+.sr-esc{position:absolute;right:18px;top:50%;margin-top:-11px;height:22px;line-height:21px;padding:0 6px;font:500 11px/21px var(--mono);color:#1E2748;z-index:3;
+  background:rgba(251,249,244,.6);box-shadow:0 0 0 1px rgba(30,39,72,.45)}
+
+/* scope tabs: a thin index strip under the card */
+.sr-tabs{position:absolute;display:flex;align-items:center;gap:4px;white-space:nowrap;opacity:0}
+.sr-tab{all:unset;cursor:pointer;font:600 12.5px/1 "Noto Serif CJK SC",serif;letter-spacing:.2em;padding:6px 12px;color:rgba(30,39,72,.7);transition:background .25s,color .25s}
+.sr-tab i{font:600 10px/1 var(--mono);letter-spacing:.04em;margin-right:6px;opacity:.7;font-style:normal}
+.sr-tab:hover{color:#1E2748;background:rgba(251,249,244,.6)}
+.sr-tab.on{background:#1E2748;color:#FBF9F4}
+.sr-tab.on::after{content:"";display:inline-block;width:6px;height:6px;margin-left:8px;background:#E8C9D0;vertical-align:1px}
+
+/* cream glass panels with a thin ink edge + ink title strip + corner number */
+.sr-pn{position:absolute;box-sizing:border-box;opacity:0;background:linear-gradient(160deg,rgba(251,249,244,.86),rgba(244,246,251,.78) 60%,rgba(236,240,248,.76));
+  box-shadow:0 0 0 1px rgba(30,39,72,.6),0 18px 40px rgba(30,39,72,.16),inset 0 1px 0 rgba(255,255,255,.9)}
+.sr-pn::before{content:"";position:absolute;right:-1px;top:-1px;width:14px;height:14px;border-top:2px solid #1E2748;border-right:2px solid #1E2748}
+.sr-pn::after{content:"";position:absolute;left:-1px;bottom:-1px;width:14px;height:14px;border-bottom:2px solid #1E2748;border-left:2px solid #1E2748}
+.sr-ph2{display:flex;align-items:center;gap:10px;height:30px;padding:0 12px 0 0;background:#1E2748;color:#FBF9F4;white-space:nowrap}
+.sr-ph2 .sr-nn{display:inline-block;height:30px;line-height:30px;padding:0 9px;background:#E8C9D0;color:#1E2748;font:700 11px/30px var(--mono)}
+.sr-ph2 b{font:700 12px/1 "Noto Serif CJK SC",serif;letter-spacing:.24em}
+.sr-ph2 em{font:500 10px/1 var(--mono);letter-spacing:.14em;opacity:.75;font-style:normal;margin-left:auto}
+.sr-status{margin:0;padding:10px 14px 6px;font:500 10.5px/1.4 var(--mono);letter-spacing:.1em;color:rgba(30,39,72,.72);white-space:nowrap}
+.sr-status b{font:700 20px/1 "Noto Serif CJK SC",serif;color:#1E2748;letter-spacing:0;margin-right:4px}
+
+/* result rows */
+.sr-res{position:relative;padding:4px 10px 0}
+.sr-c{position:relative;display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;height:50px;padding:0 10px 0 6px;margin-bottom:5px;cursor:pointer;opacity:0;
+  border-bottom:1px solid rgba(30,39,72,.14);transition:background .25s}
+.sr-c .sr-ix{font:700 10.5px/1 var(--mono);color:#1E2748;border:1px solid rgba(30,39,72,.55);padding:4px 0;text-align:center}
+.sr-c .sr-tt2{min-width:0}
+.sr-c .sr-tt2 b{display:block;font:600 13.5px/1.35 "Noto Serif CJK SC",serif;letter-spacing:.04em;color:#1E2748;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-c .sr-tt2 i{display:block;margin-top:3px;font:500 10px/1 var(--mono);letter-spacing:.06em;color:rgba(30,39,72,.6);font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-c .sr-tm{font:500 10.5px/1.3 var(--mono);color:rgba(30,39,72,.66);text-align:right;white-space:nowrap}
+.sr-c .sr-tm em{display:block;font-style:normal;color:#1E2748;font-weight:700}
+.sr-c.front{background:linear-gradient(90deg,#DCE2F1,rgba(220,226,241,.55));box-shadow:inset 3px 0 0 #1E2748}
+.sr-c.front .sr-ix{background:#1E2748;color:#FBF9F4}
+.sr-c.front::after{content:"";position:absolute;right:-6px;top:50%;width:8px;height:8px;margin-top:-4px;background:#E8C9D0;transform:rotate(45deg);box-shadow:0 0 0 1px rgba(30,39,72,.4)}
+.sr-c u,.sr-dt u,.sr-dv u{text-decoration:none;background:linear-gradient(90deg,#66718F,#BFC8E0 50%,#66718F) no-repeat 0 100%/100% 2px;padding-bottom:1px;font-weight:700}
+
+/* recent searches (shown inside the results panel when the query is empty) */
+.sr-recent{padding:8px 14px 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 6px}
+.sr-rl{width:100%;font:600 10px/1 var(--mono);letter-spacing:.2em;color:rgba(30,39,72,.6)}
+.sr-rl em{font:normal 19px/1 "Pinyon",serif;letter-spacing:0;color:#1E2748;margin-right:8px}
+.sr-chips{display:contents}
+.sr-chip{all:unset;cursor:pointer;font-size:12px;letter-spacing:.06em;color:#1E2748;padding:3px 9px;box-shadow:0 0 0 1px rgba(30,39,72,.45);background:rgba(251,249,244,.7);transition:background .2s}
+.sr-chip:hover{background:#DCE2F1}
+.sr-none{font-size:11.5px;color:rgba(30,39,72,.5);letter-spacing:.12em}
+.sr-clr{all:unset;cursor:pointer;font:500 10px/1 var(--mono);letter-spacing:.14em;color:rgba(30,39,72,.6);margin-left:4px}
+#sr.no-recent .sr-clr{display:none}
+#sr.has-q .sr-recent{display:none}
+
+/* the 45° diamond glass preview, lined with a small piece of sky (the cloud staircase) */
+.sr-dia{position:absolute;width:0;height:0;opacity:0;cursor:pointer;perspective:1000px}
+.sr-dq{position:absolute;left:-150px;top:-150px;width:300px;height:300px}
+.sr-dq .sr-sky{position:absolute;inset:6px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background-size:cover;background-position:60% 50%;background-color:#DCE8F4}
+.sr-dq svg{position:absolute;inset:0;width:300px;height:300px;overflow:visible;filter:drop-shadow(0 16px 22px rgba(30,39,72,.18))}
+.sr-dq .sr-o1{fill:none;stroke:#FBF9F4;stroke-width:9;stroke-linejoin:miter}
+.sr-dq .sr-o2{fill:none;stroke:#1E2748;stroke-opacity:.6;stroke-width:1}
+.sr-dq .sr-o3{fill:none;stroke:#1E2748;stroke-opacity:.25;stroke-width:1}
+.sr-dv{position:absolute;left:-150px;top:-150px;width:300px;height:300px;backface-visibility:hidden;will-change:transform,opacity;pointer-events:none}
+.sr-dv .sr-sc{position:absolute;left:0;right:0;top:92px;text-align:center;font:normal 44px/1 "Pinyon",serif;color:#1E2748;text-shadow:0 0 12px rgba(255,255,255,.95),0 0 3px #fff;transform:rotate(-8deg)}
+.sr-dv .sr-plt{position:absolute;left:58px;width:184px;top:178px;box-shadow:0 0 0 1px rgba(30,39,72,.6),0 8px 18px rgba(30,39,72,.18);background:rgba(251,249,244,.95)}
+.sr-dv .sr-plt b{display:block;background:#1E2748;color:#FBF9F4;font:700 10.5px/21px var(--mono);letter-spacing:.18em;padding:0 8px}
+.sr-dv .sr-plt b i{font-style:normal;float:right;color:#E8C9D0}
+.sr-dv .sr-plt span{display:block;padding:5px 8px 6px;font:600 12px/1.4 "Noto Serif CJK SC",serif;letter-spacing:.04em;color:#1E2748;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-dv .sr-lk{position:absolute;left:104px;top:54px;font:600 9.5px/1 var(--mono);letter-spacing:.14em;color:#1E2748;background:rgba(251,249,244,.92);box-shadow:0 0 0 1px rgba(30,39,72,.45);padding:3px 5px}
+
+/* detail panel (right): the chosen hit, full */
+.sr-dt{position:absolute;left:0;right:0;top:30px;bottom:0;padding:9px 16px 0;overflow:hidden;box-sizing:border-box;will-change:opacity,transform}
+.sr-dt .sr-mt{display:flex;gap:10px;align-items:center;font:500 10.5px/1 var(--mono);letter-spacing:.08em;color:rgba(30,39,72,.7);white-space:nowrap}
+.sr-dt .sr-mt b{font:700 10.5px/1 var(--mono);letter-spacing:.12em;color:#FBF9F4;background:#1E2748;padding:4px 7px}
+.sr-dt .sr-tt2{margin:6px 0 0;font:800 18px/1.35 "Noto Serif CJK SC",serif;letter-spacing:.06em;color:#1E2748;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.sr-dt ol{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.sr-dt li{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:start;padding-top:5px;border-top:1px solid rgba(30,39,72,.16)}
+.sr-dt li em{font:700 10px/1 var(--mono);letter-spacing:.08em;text-align:center;padding:4px 0;color:#1E2748;box-shadow:0 0 0 1px rgba(30,39,72,.55);font-style:normal}
+.sr-dt li em.r-user{background:#DCE2F1}
+.sr-dt li span{font-size:13px;line-height:1.65;letter-spacing:.04em;color:#1E2748;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.6}
+.sr-dt li time{display:none;font:500 10px/1.6 var(--mono);color:rgba(30,39,72,.55)}
+.sr-dt .sr-poem3{padding-top:14px;text-align:center}
+.sr-dt .sr-poem3 em{display:block;font:normal 34px/1.15 "Pinyon",serif;color:#1E2748}
+.sr-dt .sr-poem3 span{display:block;margin-top:12px;font-size:13px;line-height:1.8;letter-spacing:.14em;color:rgba(30,39,72,.8)}
+.sr-tiles{position:absolute;left:14px;right:14px;bottom:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.sr-tile{position:relative;height:64px;padding:8px 10px;box-sizing:border-box;box-shadow:0 0 0 1px rgba(30,39,72,.5);background:rgba(251,249,244,.75)}
+.sr-tile.t2{background:#DCE2F1}
+.sr-tile.t3{background:#BFC8E0}
+.sr-tile i{display:block;font:600 9.5px/1 var(--mono);letter-spacing:.14em;color:rgba(30,39,72,.7);font-style:normal}
+.sr-tile b{position:absolute;right:10px;bottom:7px;font:800 30px/1 "Noto Serif CJK SC",serif;color:#1E2748;letter-spacing:-.02em}
+.sr-tile b small{font-size:13px;font-weight:700;margin-left:2px}
+.sr-go{position:absolute;right:14px;top:10px;font:600 10px/18px var(--mono);letter-spacing:.14em;color:#1E2748;z-index:2}
+.sr-go kbd{font:700 10px/18px var(--mono);color:#FBF9F4;background:#1E2748;padding:0 5px;margin-right:6px}
+
+/* footer strip */
+.sr-ft{position:absolute;left:0;right:0;opacity:0;pointer-events:none;display:flex;align-items:center;gap:22px;white-space:nowrap;font:500 10.5px/1 var(--mono);letter-spacing:.14em;color:rgba(30,39,72,.75)}
+.sr-ft b{font-weight:700;color:#FBF9F4;background:#1E2748;padding:3px 6px;margin-right:6px}
+.sr-n{font:700 11px/1 var(--mono);color:#1E2748;letter-spacing:.12em}
+.sr-ft .sr-spc{flex:1}
+
+/* the message a search opened, in the history view */
+#thHist .row.sr-hit .sr-l1{outline:2px solid rgba(154,164,191,0);outline-offset:3px;animation:srHit 2.6s cubic-bezier(.16,1,.3,1) both}
+@keyframes srHit{0%{outline-color:rgba(154,164,191,0);outline-offset:9px;filter:none}
+ 14%{outline-color:rgba(127,140,176,.95);outline-offset:3px;filter:drop-shadow(0 0 10px rgba(154,164,191,.95))}
+ 70%{outline-color:rgba(127,140,176,.7);outline-offset:3px;filter:drop-shadow(0 0 6px rgba(154,164,191,.6))}
+ 100%{outline-color:rgba(154,164,191,0);outline-offset:3px;filter:none}}
+@media (prefers-reduced-motion: reduce){#thHist .row.sr-hit .sr-l1{animation:none;outline-color:rgba(127,140,176,.9)}}
+
+/* ---- sky collage (一张风格参考图 «Hanging in the sky»): die-cut stickers, one of each ---- */
+.sr-k{position:absolute;left:0;top:0;height:auto;pointer-events:none;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 10px 14px rgba(30,39,72,.16)) drop-shadow(0 1px 1px rgba(30,39,72,.18))}
+.sr-bld{transform-origin:0 0}
+.sr-dove{width:96px;filter:drop-shadow(0 8px 10px rgba(30,39,72,.14))}
+.sr-clouds{position:absolute;inset:0;pointer-events:none;opacity:0}
+.sr-clouds i{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.96),rgba(255,255,255,.75) 45%,rgba(251,249,244,0))}
+.sr-arch{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;opacity:0}
+.sr-arch .sr-ab{fill:#FBF9F4;fill-rule:evenodd;stroke:#FFFFFF;stroke-width:5}
+.sr-arch .sr-as{fill:rgba(30,39,72,.06);fill-rule:evenodd;stroke:rgba(30,39,72,.05);stroke-width:8}
+.sr-arch .sr-as.s1{transform:translateY(12px)}
+.sr-arch .sr-as.s2{transform:translateY(4px);fill:rgba(30,39,72,.07);stroke:rgba(30,39,72,.2);stroke-width:6}
+.sr-arch .sr-al{stroke:#1E2748;stroke-opacity:.38;stroke-width:1;stroke-dasharray:1 1}
+.sr-scr{position:absolute;text-align:center;font:normal 50px/1 "Pinyon",serif;color:#1E2748;opacity:0;pointer-events:none;white-space:nowrap;text-shadow:0 0 14px rgba(255,255,255,.95),0 0 2px #fff}
+.sr-poem2{position:absolute;width:250px;padding:12px 14px;box-sizing:border-box;background:rgba(251,249,244,.92);box-shadow:0 0 0 1px rgba(30,39,72,.35),0 0 0 4px #fff,0 10px 18px rgba(30,39,72,.14);
+  transform:rotate(-2deg);opacity:0;pointer-events:none}
+.sr-poem2 p{margin:0;font-size:12px;line-height:1.8;letter-spacing:.14em;color:#1E2748}
+.sr-poem2 p.sr-en{margin-top:6px;font:italic 13px/1.45 "CormI",serif;letter-spacing:.02em;color:#3E4A72}
+.sr-gly span{text-shadow:0 0 22px rgba(255,255,255,.9)}
+/* 16:30: 2nd hit no longer clamped to one line (panel is taller); the Q=… mono note sat under the panel and now ghosted through it */
+.sr-m3{display:none}

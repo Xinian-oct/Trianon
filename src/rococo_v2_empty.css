@@ -1,0 +1,101 @@
+/* ===== rococo v2 · 空白页中心区 v5「欧式复古拼贴 · 用户动效规格版」(2026-10-27 13:10) =====
+   Upgrades v4 to the user's own spec: tarot-shuffle deal of the architecture cards, 3D peel-and-flatten die-cut stickers,
+   a hammer-blow postmark with a paper tremor, copperplate script revealed by a 15° slanted mask across the card seams + a cool
+   silver shimmer, layered mouse parallax, pewter paper clip + binder clip. Public-domain source art: e5v/SOURCES.md.
+   No curtains, no dots / checks / dense repeats, no warm gold. All motion lives in rococo_v2_empty.js. */
+#vEmpty .hall .dsep{margin:0 0 6px!important}
+#vEmpty .invite.c5i{position:relative;width:700px;height:560px;flex:none}
+#vEmpty .c5{position:absolute;inset:0}
+#vEmpty .c5>*{position:absolute}
+@media (max-height:880px){#vEmpty .invite.c5i{zoom:.92}}
+@media (max-height:800px){#vEmpty .invite.c5i{zoom:.82}}
+@media (max-height:720px){#vEmpty .invite.c5i{zoom:.72}}
+#vEmpty .c5p{transform-origin:50% 50%;will-change:transform}
+#vEmpty .c5p>*{position:absolute}
+
+/* ---- base cards ---- */
+#vEmpty .c5-card{background:#FBF9F4;border-radius:2px;box-shadow:inset 0 0 0 .6px rgba(102,113,143,.22)}
+#vEmpty .c5-stack{background:none;box-shadow:none}
+#vEmpty .c5-face{inset:0;border-radius:2px;background:linear-gradient(170deg,#E6EAF4,#D7DDEE);box-shadow:inset 0 0 0 .6px rgba(102,113,143,.26)}
+#vEmpty .c5-face>*{position:absolute}
+#vEmpty .c5-sheet{inset:0;border-radius:2px;box-shadow:inset 0 0 0 .6px rgba(102,113,143,.22),0 1px 1.5px rgba(30,39,72,.12)}
+#vEmpty .c5-sheet.s1{background:#FBF9F4;transform:translate(-13px,9px) rotate(-3.4deg)}
+#vEmpty .c5-sheet.s2{background:#E9EDF6;transform:translate(9px,15px) rotate(2.6deg)}
+#vEmpty .c5-ph{display:block;background-size:cover;background-position:50% 50%;box-shadow:0 0 0 .6px rgba(30,39,72,.16)}
+#vEmpty .c5-cap{font-family:"Pinyon",var(--serif);font-weight:400;color:#2E3B68;line-height:1;white-space:nowrap}
+#vEmpty .c5-sm{font-family:"CormI",var(--serif);font-style:italic;font-size:10px;letter-spacing:.04em;color:rgba(30,39,72,.55);line-height:1;white-space:nowrap}
+#vEmpty .c5-clip{width:56px;height:60px;filter:drop-shadow(0 1.5px 1px rgba(30,39,72,.28))}
+#vEmpty .c5-clip svg{display:block}
+
+/* ---- the letter ---- */
+#vEmpty .c5-letter svg.c5-lpaper{position:absolute;left:0;top:0;display:block}
+#vEmpty .c5-crest{position:absolute;display:block;mix-blend-mode:multiply;opacity:.9}
+#vEmpty .c5-note{font-family:"CormI",var(--serif);font-style:italic;font-size:11px;letter-spacing:.05em;color:rgba(30,39,72,.5);line-height:1;white-space:nowrap}
+#vEmpty .c5-pc{display:block;width:22px;height:64px;filter:drop-shadow(0 1px .6px rgba(30,39,72,.25))}
+#vEmpty .c5-pc svg{display:block}
+
+/* ---- ink: postmark + Envoyé (cool ink, multiplied onto the paper so the grain shows through) ---- */
+#vEmpty .c5-inkp{pointer-events:none;mix-blend-mode:multiply}
+#vEmpty .c5-inkp svg{position:absolute;left:0;top:0;display:block;overflow:visible}
+#vEmpty .c5-inkp svg *{stroke:#2A3560;fill:#2A3560}
+#vEmpty .c5-inkp svg [fill="none"],#vEmpty .c5-inkp .c5-wv path{fill:none}
+#vEmpty .c5-pm{transform-origin:100px 50px}
+#vEmpty .c5-pmr{font-family:"CormI",var(--serif);font-style:normal;font-size:8.6px;letter-spacing:.2em;stroke:none!important}
+#vEmpty .c5-pmd{font-family:"CormI",var(--serif);font-style:italic;font-weight:600;font-size:20px;stroke:none!important}
+#vEmpty .c5-pmm{font-family:"CormI",var(--serif);font-style:normal;font-size:7px;letter-spacing:.08em;stroke:none!important}
+#vEmpty .c5-envt{font-family:"Pinyon",var(--serif);font-size:27px;stroke:none!important}
+#vEmpty .c5-env{opacity:0}
+
+/* ---- script across the seams ---- */
+#vEmpty .c5-script{left:0;top:0;width:700px;height:560px;pointer-events:none;will-change:transform,mask-image}
+#vEmpty .c5-script svg{display:block;overflow:visible}
+#vEmpty .c5-script .c5w{display:none}
+#vEmpty .c5-script .c5w.l2,#vEmpty .c5-script .c5w.on{display:inline}
+#vEmpty .c5-halo path{fill:none;stroke:#FBF9F4;stroke-width:4.2;stroke-linejoin:round;stroke-linecap:round;opacity:.92}
+#vEmpty .c5-ink path{fill:#1E2748;stroke:none}
+#vEmpty .c5-ink .l2 path{fill:#24305A}
+#vEmpty .c5-halo .c5fl{stroke-width:4.6}
+#vEmpty .c5-ink .c5fl{fill:none;stroke:#24305A;stroke-width:1.6;stroke-linecap:round}
+#vEmpty .c5-sh{opacity:0;mix-blend-mode:screen}
+#vEmpty .c5-sh path{fill:url(#c5ShG);stroke:none}
+#vEmpty .c5-sh .c5fl{fill:none;stroke:url(#c5ShG);stroke-width:1.6}
+
+/* ---- stickers (white die-cut margin baked into the image) ---- */
+#vEmpty .c5-stk .c5s-in,#vEmpty .c5-tag .c5s-in{position:absolute;inset:0;transform-origin:20% 84%;
+  transition:transform .42s cubic-bezier(.22,1,.36,1),filter .42s cubic-bezier(.22,1,.36,1);filter:none}
+#vEmpty .c5s-in img,#vEmpty .c5s-in svg{position:absolute;left:0;top:0;display:block}
+#vEmpty .c5-stk{cursor:default}
+#vEmpty .c5-stk:hover .c5s-in{transform:perspective(520px) rotateX(9deg) rotateY(-11deg) translate(-1px,-2px);
+  filter:drop-shadow(4px 9px 9px rgba(30,39,72,.22))}
+#vEmpty .c5-cam{left:0;top:0;width:700px;height:560px;pointer-events:none}
+#vEmpty .c5-cord{position:absolute;left:0;top:0;overflow:visible;filter:drop-shadow(0 1px .5px rgba(30,39,72,.2))}
+#vEmpty .c5-tagw{position:absolute;transform-origin:0 0;will-change:transform}
+#vEmpty .c5-clasp{position:absolute;left:0;top:0;overflow:visible;z-index:2;filter:drop-shadow(0 1px .6px rgba(30,39,72,.3))}
+#vEmpty .c5-tag{position:absolute;pointer-events:auto;cursor:default}
+#vEmpty .c5-tag:hover .c5s-in{transform:perspective(520px) rotateX(-8deg) rotateY(10deg) translate(1px,-1px);
+  filter:drop-shadow(-3px 9px 9px rgba(30,39,72,.22))}
+
+/* ---- quick starts: three die-cut labels ---- */
+#vEmpty .invite .tagcap{left:0;right:0;top:470px;margin:0!important;text-align:center;font-size:9.5px;line-height:15px;letter-spacing:.42em;color:rgba(30,39,72,.5);
+  pointer-events:none}
+#vEmpty .invite .tagcap span{display:inline-block;padding:0 6px}
+#vEmpty .invite .tags{left:0;right:0;top:492px;display:flex;justify-content:center;gap:14px}
+#vEmpty .tag.c5t{all:unset;position:relative;cursor:pointer;display:block;width:166px;height:62px;will-change:transform;filter:none}
+#vEmpty .tag.c5t:hover,#vEmpty .tag.c5t:focus-visible{filter:none}
+#vEmpty .c5t-in{position:absolute;inset:0;transform-origin:16% 82%;
+  filter:drop-shadow(0 .6px .6px rgba(30,39,72,.18)) drop-shadow(0 3px 4px rgba(30,39,72,.12));
+  transition:transform .42s cubic-bezier(.22,1,.36,1),filter .42s cubic-bezier(.22,1,.36,1)}
+#vEmpty .c5t-in svg{position:absolute;left:0;top:0;display:block}
+#vEmpty .c5t-in span{position:absolute;left:8px;top:8px;width:150px;height:46px;display:flex;align-items:center;justify-content:center;
+  font-family:"CormI",var(--serif);font-style:italic;font-size:17px;letter-spacing:.03em;color:var(--ink);white-space:nowrap;
+  background:none!important;clip-path:none!important;box-shadow:none!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;opacity:1!important}
+#vEmpty .c5t-in span::before,#vEmpty .c5t-in span::after{content:none!important;display:none!important}
+#vEmpty .tag.t1{--ink:#3E4A72}#vEmpty .tag.t2{--ink:#4E5878}#vEmpty .tag.t3{--ink:#6E5E6C}
+#vEmpty .tag.c5t:hover .c5t-in,#vEmpty .tag.c5t:focus-visible .c5t-in{transform:perspective(420px) rotateX(10deg) rotateY(-12deg) translate(-1px,-2px);
+  filter:drop-shadow(0 1px 1px rgba(30,39,72,.16)) drop-shadow(4px 8px 9px rgba(30,39,72,.22))}
+#vEmpty .tag.c5t:active .c5t-in{transform:perspective(420px) rotateX(3deg) rotateY(-4deg)}
+@media (prefers-reduced-motion:reduce){#vEmpty .c5t-in,#vEmpty .c5s-in{transition:none}}
+/* the「新 的 信 笺」rule above: silver blue */
+#vEmpty .hall .dsep::before{background:linear-gradient(90deg,transparent,rgba(141,151,180,.6))}
+#vEmpty .hall .dsep::after{background:linear-gradient(90deg,rgba(141,151,180,.6),transparent)}
+#vEmpty .hall .dsep{color:rgba(30,39,72,.5)}
