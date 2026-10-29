@@ -5,6 +5,8 @@
 
 **⚠️ 非官方项目。** Trianon 是社区做的界面概念作品，和 Moonshot AI（月之暗面）没有任何关联，也没有得到它的认可或赞助。「Kimi」「Kimi Code」是 Moonshot AI 的名称；这里提到它们，只是为了说明这套界面是照着 Kimi Code 的使用场景设计的。仓库里没有官方 logo，也没有官方代码。
 
+**▶ 在线试玩：<https://qimingjiu.github.io/Trianon/>**（地址末尾也可以加 `#empty`、`#play` 等场景名）
+
 ![一次完整的对话演示](docs/demo.gif)
 
 ![对话页 + 右侧卷宗](docs/screenshots/chat_dossier.jpg)
@@ -105,6 +107,7 @@ window.__files.onRequest = (type, payload) => {
 
 **Not affiliated with, endorsed by, or sponsored by Moonshot AI.** "Kimi" and "Kimi Code" are names of Moonshot AI and are used here only to describe what the concept was designed around. No official logos or code are included.
 
+- Live demo: <https://qimingjiu.github.io/Trianon/>
 - `dist/trianon.html` is a self-contained, offline, clickable prototype. Every screen runs on built-in mock data, and all names, emails and paths in it are fictional.
 - Build: `pip install -r requirements.txt && python3 build.py`. The build is reproducible: the same input gives byte-identical output.
 - Backend bridge: every layer exposes `window.__xxx.emit(type, payload)` (backend → page) and `window.__xxx.onRequest = (type, payload) => …` (page → backend; return `false` to fall back to the mock). See the table above. The main conversation timeline is still a scripted demo and is not bridged yet.
