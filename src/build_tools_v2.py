@@ -150,7 +150,7 @@ GROUP = f'''<div class="tgrp" id="tvG">
   <span class="tg-f">stream.ts · stream.test.ts · “flushFrame”</span><em class="tg-d">1.6s</em>{CHEV}</div>
  <div class="tg-b" id="tvGB">
   {note('tvR1', 'read', -7, 'ReadFile', 'src/renderer/stream.ts', '0.4s', meta='96 行')}
-  {note('tvR2', 'grep', 5, 'Grep', '"flushFrame|commit\\(" src/renderer', '0.3s', meta='3 处匹配')}
+  {note('tvR2', 'grep', 5, 'Grep', '"flushFrame|commit(" src/renderer', '0.3s', meta='3 处匹配')}
   {note('tvR3', 'read', -4, 'ReadFile', 'tests/stream.test.ts', '0.4s', meta='58 行')}
  </div></div>'''
 
